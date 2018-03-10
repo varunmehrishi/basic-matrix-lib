@@ -1,3 +1,6 @@
+#ifndef BASIC_MAT
+#define BASIC_MAT
+
 #include <iostream>
 #include <vector>
 #include <algorithm>
@@ -158,3 +161,4 @@ namespace basic {
 	};
 }
 
+#endif
