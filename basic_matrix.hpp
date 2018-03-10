@@ -87,14 +87,14 @@ namespace basic {
 			return result;
 		}
 
-		/* matrix + val operator, adds val to each element in matrix */	
+		/* matrix += val operator, adds val to each element in matrix */	
 		void operator += (T val) {
 			std::transform(mat.begin(), mat.end(), mat.begin(),
 							[&val](auto x){return x + val;});
 		}
 
 
-		/* matrix + val operator, adds val to each element in matrix */	
+		/* matrix += matrix operator, adds values of other to matrix */	
 		void operator += (const matrix& other) {
 			assert(m == other.m);
 			assert(n == other.n);
@@ -141,7 +141,7 @@ namespace basic {
 			mat = new_mat;
 		}
 	
-		/* matrix * val operator, multiplies val to each element in matrix */	
+		/* matrix *= val operator, multiplies val to each element in matrix */	
 		void operator *= (T val) {
 			std::transform(mat.begin(), mat.end(), mat.begin(),
 							[&val](auto x){return x * val;});
