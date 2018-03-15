@@ -1,42 +1,38 @@
-#include <iostream>
-#include <complex>
-#include <chrono>
 #include "basic_matrix.hpp"
-
+#include <iostream>
+#include <chrono>
+using namespace basic;
 int main(void) {
 	auto duration = [](auto begin, auto end) {
         return std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count();
 	};
+	using clk = std::chrono::high_resolution_clock;
+	matrix<double> a(200, 300, 2);
+	matrix<double> b(200, 300, 5);
+	matrix<double> c(200, 300, 7);
+	auto begin = clk::now(); 
+	std::cout << (a+b+c)(100, 100) << "\n";
+	std::cout << "Time taken : "<<  duration(begin, clk::now()) << " ms\n\n";
 
-
-	basic::matrix<int> m(1000,500,1);
-	basic::matrix<int> n(1000,500,2);
+	begin = clk::now();	
+	std::cout << (a+a+b+b+c+c+a+b+c)(100, 100) << "\n";
+	std::cout << "Time taken : "<<  duration(begin, clk::now()) << " ms\n\n";
 	
-	auto begin = std::chrono::steady_clock::now();
-	basic::matrix<int> o = m + n + 10;
-	o += o;
-	auto end = std::chrono::steady_clock::now();
-	std::cout << "Addition "<<duration(begin, end) << " microseconds\n\n";
 	
-	
-	
-	basic::matrix<double> a(100, 500, 2);
-	basic::matrix<double> b(500, 100, 5);
+	begin = clk::now();
+	matrix<int> m(100, 200, 5);
+	matrix<int> n(200, 100, 2);
+	matrix<int> o(100, 100, 100);
+	/* faster than normal as only two vector product and one addition */
+	std::cout << (m*n+o*o)(50, 50) << "\n";
+	std::cout << "Time taken : "<<  duration(begin, clk::now()) << " ms\n\n";
 
-	begin = std::chrono::steady_clock::now();
-	basic::matrix<double> c = a * b * (1.0/3);
-	c *= c + c;
-	end = std::chrono::steady_clock::now();
-	std::cout << "Multiplication " << duration(begin, end) << " microseconds\n\n";
-
-
-	std::complex<double> z1{5,2}; 
-	basic::matrix<std::complex<double>> p(2, 2);
-	p = {z1, z1*z1, -z1, -z1*z1};
-	begin = std::chrono::steady_clock::now();
-	p *= p;
-	p += p;
-	end = std::chrono::steady_clock::now();
-	std::cout << p << duration(begin, end) << " microseconds\n\n";
-	std::endl(std::cout);
+	matrix<float> p(5, 6, 0.1);
+	matrix<float> q(6, 5, 10);
+	begin = clk::now();
+	matrix<float> r = p * q;
+	r *= r;
+	r += r;
+	std::cout << "Time taken : "<<  duration(begin, clk::now()) << " ms\n\n";
+	std::cout << r << "\n";
 }
