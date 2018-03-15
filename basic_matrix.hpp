@@ -123,7 +123,7 @@ namespace basic {
             return mat[n_*i + j];
         }
 
-        /* computation at time of assignment */
+        /* computation each (i,j) and assign to mat */
         template<typename DerivedExpr>
         matrix<T>& operator = (const BaseExpr<DerivedExpr>& other_exp) {
             const DerivedExpr& other = other_exp.get_derived();
