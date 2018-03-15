@@ -78,6 +78,7 @@ namespace basic {
         return BinaryExpr<times_, Op1, Op2>(op1.get_derived(), op2.get_derived());
     }
 
+	/* matrix class uses std::vector as internal container */
     template<typename T>
     class matrix: public BaseExpr<matrix<T>> {
     protected:
@@ -125,7 +126,7 @@ namespace basic {
         /* computation at time of assignment */
         template<typename DerivedExpr>
         matrix<T>& operator = (const BaseExpr<DerivedExpr>& other_exp) {
-            DerivedExpr const& other = other_exp.get_derived();
+            const DerivedExpr& other = other_exp.get_derived();
             for(size_t i = 0; i < m_; i++)
                 for(size_t j = 0; j < n_; j++)
                     this->operator()(i, j) = other(i, j);
