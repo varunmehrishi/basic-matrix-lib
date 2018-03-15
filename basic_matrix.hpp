@@ -30,7 +30,7 @@ namespace basic {
         const Op1& op1;
         const Op2& op2;
         OpType op;
-    public:	
+    public: 
         BinaryExpr(const Op1& A, const Op2& B): op1(A), op2(B) {}
         
         /* need this here to get type of this expression */
@@ -45,7 +45,7 @@ namespace basic {
     struct plus_ {
         template<typename Op1, typename Op2>
         std::common_type_t<typename Op1::type, typename Op2::type> 
-		operator()(const Op1& op1, const Op2& op2, size_t i, size_t j) const {
+        operator()(const Op1& op1, const Op2& op2, size_t i, size_t j) const {
             return op1(i, j) + op2(i, j);
         }
     };
@@ -55,7 +55,7 @@ namespace basic {
     struct times_ {
         template<typename Op1, typename Op2>
         std::common_type_t<typename Op1::type, typename Op2::type> 
-		operator()(const Op1& op1, const Op2& op2, size_t i, size_t j) const {
+        operator()(const Op1& op1, const Op2& op2, size_t i, size_t j) const {
             std::common_type_t<typename Op1::type, typename Op2::type> val = 0;
             for(size_t k = 0; k < op1.N(); k++)
                 val += op1(i, k) * op2(k, j);
@@ -86,14 +86,14 @@ namespace basic {
         size_t n_;
     public:
         using type = T;
-      	
-	   	/* empty constructor */	
-	   	matrix() {};
+        
+        /* empty constructor */ 
+        matrix() {};
 
-		/* basic constructor */	
+        /* basic constructor */ 
         matrix(const size_t m, const size_t n): m_(m), n_(n), mat(m*n) {}
 
-		/* basic constructor with initialization */
+        /* basic constructor with initialization */
         matrix(const size_t m, const size_t n, const T init): m_(m), n_(n), mat(m*n, init) {}
         matrix(const matrix& other): m_(other.M()), n_(other.N()) {
             for(size_t i = 0; i < m_; i++)
@@ -101,14 +101,14 @@ namespace basic {
                     this->operator()(i, j) = other(i, j);
         }
 
-		/* direct construction from expression */
-       	template<typename DerivedExpr>
-	   	matrix(const BaseExpr<DerivedExpr>& other_exp) {
-			DerivedExpr const& other = other_exp.get_derived();
-			m_ = other.M();
-			n_ = other.N();
-			mat.resize(m_*n_);
- 			for(size_t i = 0; i < m_; i++)
+        /* direct construction from expression */
+        template<typename DerivedExpr>
+        matrix(const BaseExpr<DerivedExpr>& other_exp) {
+            DerivedExpr const& other = other_exp.get_derived();
+            m_ = other.M();
+            n_ = other.N();
+            mat.resize(m_*n_);
+            for(size_t i = 0; i < m_; i++)
                 for(size_t j = 0; j < n_; j++)
                     this->operator()(i, j) = other(i, j);
         }
@@ -122,7 +122,7 @@ namespace basic {
             return mat[n_*i + j];
         }
 
-		/* computation at time of assignment */
+        /* computation at time of assignment */
         template<typename DerivedExpr>
         matrix<T>& operator = (const BaseExpr<DerivedExpr>& other_exp) {
             DerivedExpr const& other = other_exp.get_derived();
@@ -132,15 +132,15 @@ namespace basic {
             return *this;
         }
         
-		/* operator += */ 
+        /* operator += */ 
         template<typename DerivedExpr>
         matrix<T>& operator += (const BaseExpr<DerivedExpr>& other_exp) {
             /* *this = BinaryExpr<plus_,matrix<T>&, DerivedExpr&>(this->get_derived(), other_exp.get_derived()); */
             *this = *this + other_exp;
-            return *this;	
+            return *this;   
         }
 
-		/* operator *= */ 
+        /* operator *= */ 
         template<typename DerivedExpr>
         matrix<T>& operator *= (const BaseExpr<DerivedExpr>& other_exp) {
             matrix<T> result(m_, other_exp.get_derived().N());
@@ -149,17 +149,17 @@ namespace basic {
             return *this;
         }
        
-	    /* pretty print to ostream */
-		friend std::ostream& operator << (std::ostream& out, const matrix& mat) {
-			for(size_t i = 0; i < mat.M(); i++) {
-				for(size_t j = 0; j < mat.N(); j++) {
-					out << mat(i, j) << " ";
-				}
-				out << "\n";
-			}
-			return out;
-		}
-	
+        /* pretty print to ostream */
+        friend std::ostream& operator << (std::ostream& out, const matrix& mat) {
+            for(size_t i = 0; i < mat.M(); i++) {
+                for(size_t j = 0; j < mat.N(); j++) {
+                    out << mat(i, j) << " ";
+                }
+                out << "\n";
+            }
+            return out;
+        }
+    
         inline size_t M() const {return m_;}
         inline size_t N() const {return n_;}
     };
